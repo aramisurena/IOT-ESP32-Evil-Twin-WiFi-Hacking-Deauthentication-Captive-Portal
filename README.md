@@ -140,3 +140,114 @@ ESP32, Evil Twin, WiFi Hacking, Deauthentication, Captive Portal, HTML, CSS, Jav
 ```
 
 ---
+
+### ARAMIS_URENA: NOTES FOR CSN150
+### EQUIPMENT USED: 
+- EPS32-Cam
+- iPhone
+- Windows Computer
+- USB A to C Data Cable
+  
+### TOOLS USED:
+-Arduino
+-GPT-5.3
+-GitHub
+
+### STEPS I FOLLOWED: 
+1. Forked the provided GitHub repository.
+2. Uploaded the `.ino` file into Arduino IDE.
+3. Installed and configured ESP32 board support.
+4. Selected the correct board and COM port.
+5. Fixed compilation errors caused by:
+   - Improper string formatting
+   - Unescaped quotation marks in HTML
+6. Rebuilt the HTML interface to properly render in Arduino.
+7. Modified the code to:
+   - Use a controlled lab SSID instead of cloning real networks
+   - Disable deauthentication features
+   - Replace real password handling with demo input logging
+8. Uploaded the corrected code to the ESP32-CAM.
+9. Connected my iPhone to the ESP32 access point.
+10. Opened `http://192.168.4.1` in a browser.
+11. Verified that the captive portal page loaded.
+12. Entered test input and confirmed it appeared in the Serial Monitor.
+
+### PROBLEMS/SOLUTIONS:
+### Problems Encountered / Solutions (Evil Twin Assignment)
+
+---
+
+**Problem 1: ESP32 Access Point Not Appearing**
+- Cause:
+  The program did not reach the `WiFi.softAP()` function due to earlier code errors.
+- Solution:
+  Fixed compilation and runtime issues so the ESP32 could properly initialize and create the access point. Once corrected, the network `EvilTwin-Lab-Demo` became visible on my iPhone.
+
+---
+
+**Problem 2: Captive Portal Not Loading Properly**
+- Cause:
+  The DNS server and web server were not correctly redirecting traffic to the ESP32, or the page failed to render due to HTML issues.
+- Solution:
+  Verified DNS redirection using:
+  ```cpp
+  dnsServer.start(53, "*", apIP);
+
+**Problem 3: Compilation Errors from HTML Strings**
+
+Errors:
+operator""width
+operator""UTF
+missing terminating character
+Cause:
+Improperly formatted HTML strings in Arduino code (quotes not escaped correctly).
+Solution:
+Escaped internal quotes using \"
+
+Rewrote broken lines such as:
+
+"<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">"
+"<meta charset=\"UTF-8\">"
+Cleaned and rebuilt the header() function to properly structure HTML output
+
+**Problem 4: Original Code Too Complex / Unstable**
+
+Cause:
+The original GitHub code included unnecessary complexity such as:
+SSID cloning
+Deauthentication logic
+Real credential validation
+Solution:
+Simplified and stabilized the code while preserving core Evil Twin functionality:
+Replaced real SSID cloning with a controlled lab SSID (EvilTwin-Lab-Demo)
+Disabled deauthentication features
+Removed real WiFi connection attempts
+Kept captive portal and user input simulation
+
+**Problem 5: Verifying Evil Twin Functionality**
+
+Issue:
+Initially unclear how to confirm the Evil Twin was working correctly.
+Solution:
+Established a testing method:
+Connect to ESP32 WiFi network (EvilTwin-Lab-Demo)
+Open browser and navigate to http://192.168.4.1
+Confirm captive portal page loads
+Enter test input
+Verify Serial Monitor output:
+
+**Problem 6: Simulating a Realistic Evil Twin**
+
+Issue:
+The project originally attempted to clone real nearby networks, which could be unsafe or unreliable.
+Solution:
+Used a controlled lab SSID and focused on simulating the user experience instead of cloning real networks. This allowed demonstration of:
+Fake network creation
+Captive portal interaction
+User input capture (simulation only)
+
+### FINAL REPORT ###
+
+For this project, I was able to use my ESP32-CAM to simulate an Evil Twin attack. I created a fake WiFI access point with the ESP32 that mimics a legitmate network login page. From here, any user who connects will have the data they input captured in my serial monitor. In this case, the password "aramis123" was captured when I connected to the EvilTwin-Lab-Demo access point I set up.
+  
+
